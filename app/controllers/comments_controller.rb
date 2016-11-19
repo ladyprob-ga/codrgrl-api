@@ -1,4 +1,4 @@
-class CommentsController < ApplicationController
+class CommentsController < ProtectedController
   before_action :set_comment, only: [:show, :update, :destroy]
 
   # GET /comments
@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(comment_params)
+    @comment = current_user.comments.build(comment_params)
 
     if @comment.save
       render json: @comment, status: :created, location: @comment
@@ -30,7 +30,6 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1
   # PATCH/PUT /comments/1.json
   def update
-    @comment = Comment.find(params[:id])
 
     if @comment.update(comment_params)
       head :no_content
